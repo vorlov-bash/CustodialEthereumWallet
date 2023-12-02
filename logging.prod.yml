@@ -1,0 +1,76 @@
+version: 1
+disable_existing_loggers: yes
+
+formatters:
+  file:
+    class: src.core.logger.CustomFormatter
+    format: "[%(asctime)s] - [%(levelname)8s] - [%(name)15s] - [%(context_id)s] - %(message)s"
+
+  simple:
+    class: src.core.logger.CustomColoredFormatter
+    format: "%(log_color)s[%(asctime)s] - [%(levelname)8s] - [%(name)15s] - [%(short_context_id)s] - %(message)s"
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: ERROR
+    formatter: simple
+    stream: ext://sys.stdout
+  console-startup:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: simple
+    stream: ext://sys.stdout
+  debug:
+    class: logging.handlers.TimedRotatingFileHandler
+    level: DEBUG
+    formatter: file
+    filename: "{logdir}/debug.log"
+    when: midnight
+    backupCount: 7
+    encoding: utf8
+  warning:
+    class: logging.handlers.TimedRotatingFileHandler
+    level: WARNING
+    formatter: file
+    filename: "{logdir}/warning.log"
+    when: midnight
+    backupCount: 7
+    encoding: utf8
+  error:
+    class: logging.handlers.TimedRotatingFileHandler
+    level: ERROR
+    formatter: file
+    filename: "{logdir}/error.log"
+    when: midnight
+    backupCount: 7
+    encoding: utf8
+
+loggers:
+  root:
+    level: DEBUG
+    handlers: [ console, debug, warning, error ]
+
+  gunicorn.error:
+    level: DEBUG
+    handlers: [ debug, warning, error, console, console-startup ]
+    propagate: no
+
+  gunicorn.access:
+    level: INFO
+    handlers: [ debug, warning, error, console ]
+    propagate: yes
+
+  kombu.pidpox:
+    level: INFO
+    handlers: [ debug, warning, error, console ]
+
+  multipart.multipart:
+    level: CRITICAL
+
+  passlib:
+    level: CRITICAL
+
+
+
+

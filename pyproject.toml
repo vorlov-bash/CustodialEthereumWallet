@@ -1,0 +1,112 @@
+[tool.poetry]
+name = "eth-wallet"
+version = "0.0.1"
+description = "This is a implementation of the Etherium hot wallet in mix with geth execution and consensus client"
+authors = ["vorlov <volodka.orlov@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "eth_wallet" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "^2.5.1"
+pydantic-settings = "^2.1.0"
+fastapi = "^0.104.1"
+psycopg2-binary = "^2.9.9"
+sqlalchemy = "^2.0.23"
+celery = "^5.3.5"
+web3 = "^6.11.3"
+redis = "^5.0.1"
+hdwallet = "^2.2.1"
+dependency-injector = "^4.41.0"
+colorlog = "^6.7.0"
+gunicorn = "^21.2.0"
+pyyaml = "^6.0.1"
+pyjwt = "^2.8.0"
+passlib = "^1.7.4"
+uvicorn = "^0.24.0.post1"
+asyncpg = "^0.29.0"
+greenlet = "^3.0.1"
+python-multipart = "^0.0.6"
+typer = "^0.9.0"
+alembic = "^1.12.1"
+bcrypt = "^4.0.1"
+eth-account = "^0.10.0"
+contextvars = "^2.4"
+
+
+[tool.poetry.group.dev.dependencies]
+isort = "5.12.0"
+ruff = "0.1.6"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+line-length = 100
+indent-width = 4
+target-version = "py311"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+ignore = [
+    "B008",
+    "UP035",
+    "SIM105"
+]
+
+[tool.ruff.per-file-ignores]
+"./migrations/versions/*.py" = [
+    "UP035",
+    "UP007"
+]
+"./src/celery/config.py" = [
+    "I001", # For some reason isort does not make this work
+]
+
+[tool.isort]
+profile = "black"
+line_length = 100

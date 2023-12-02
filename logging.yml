@@ -1,0 +1,48 @@
+version: 1
+disable_existing_loggers: true
+
+formatters:
+  simple:
+    class: src.core.logger.CustomColoredFormatter
+    format: "%(log_color)s[%(asctime)s] - [%(levelname)8s] - [%(name)7s] - [%(short_context_id)s] - %(message)s"
+  file:
+    class: src.core.logger.CustomFormatter
+    format: "[%(asctime)s] - [%(levelname)8s] - [%(name)7s] - [%(context_id)s] - %(message)s"
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: simple
+    stream: ext://sys.stdout
+  debug:
+    class: logging.FileHandler
+    level: DEBUG
+    formatter: file
+    filename: "{logdir}/debug.log"
+    encoding: utf8
+
+loggers:
+  root:
+    level: DEBUG
+    handlers: [ debug, console ]
+    propagate: no
+
+  uvicorn.access:
+    level: WARNING
+    handlers: [ debug, console ]
+    propagate: no
+
+  uvicorn.error:
+    level: INFO
+    handlers: [ debug, console ]
+    formatter: simple
+    propagate: no
+
+  multipart.multipart:
+    level: CRITICAL
+
+  passlib:
+    level: CRITICAL
+
+
